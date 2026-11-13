@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Clénord Immobilier, votre agence à Tanger. Achat, vente, location et gestion immobilière.">
+  <meta name="theme-color" content="#0b1523">
+  <title>Clenord Immobilier - Projets 360</title>
+  <link rel="icon" href="img/clenord-icon.png" type="image/png">
+  
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="architecture.css">
+  <link rel="stylesheet" href="narrative.css">
+
+  <link rel="stylesheet" href="premium.css">
+</head>
+<body class="projects-page">
+  <header class="header" id="header">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="Clénord Immobilier">
+        <img class="brand-emblem" src="img/clenord-emblem.webp" width="335" height="321" alt="">
+        <img class="brand-name" src="img/clenord-wordmark.webp" width="780" height="67" alt="">
+      </a>
+      <nav class="nav-links" id="navigation" aria-label="Navigation"><a href="index.html" data-project="home">Accueil</a><a href="projets.html" aria-current="page" data-project="projects">Projets 360</a></nav>
+      <div class="nav-actions">
+        <button class="icon-button theme" id="theme" type="button"></button>
+        <select class="language" id="language" aria-label="Langue">
+          <option value="fr">FR</option><option value="en">EN</option><option value="ar">العربية</option>
+        </select>
+
+        <button class="icon-button menu" id="menu" type="button" aria-controls="navigation" aria-expanded="false"></button>
+      </div>
+    </div>
+  </header>
+
+<main id="main" class="projects-main"><div class="wrap projects-intro"><p class="eyebrow">CLENORD COLLECTION</p><h1 data-project="title">Projets 360</h1><p data-project="intro"></p><a href="index.html" class="text-button" data-project="back">Accueil</a></div>    <section id="plan-residence" class="residence-plan wrap" aria-labelledby="planTitle">
+      <div class="section-intro">
+        <div>
+          <p class="eyebrow" data-t="planLabel">PLAN D’ENSEMBLE</p>
+          <h2 id="planTitle" data-t="planTitle">La résidence prend forme.</h2>
+        </div>
+        <p data-t="planIntro">Défilez pour voir naître le quartier, ses douze immeubles, sa mosquée, sa piscine et ses jardins.</p>
+      </div>
+      <div class="plan-track">
+        <div class="plan-pin">
+          <canvas id="residenceCanvas" role="img" aria-labelledby="planTitle" aria-describedby="planNote"></canvas>
+          <div class="plan-caption"><span data-t="planBuildings">Immeubles en place</span><strong><span id="planCount">0</span> / 12</strong></div>
+          <div class="plan-progress" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p id="planNote" data-t="planNote">Visualisation 3D illustrative : douze immeubles, mosquée, piscine, jardins et équipements. Projet de démonstration.</p>
+    </section>
+
+</main><script src="projects.js"></script><script type="module" src="residence-plan.js"></script></body></html>

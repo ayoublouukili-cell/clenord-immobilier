@@ -17,7 +17,6 @@
   <script src="app.js" defer></script>
   <script src="concierge.js" defer></script>
   <script type="module" src="narrative.js"></script>
-  <script type="module" src="residence-plan.js"></script>
   <link rel="stylesheet" href="premium.css">
 <script src="gallery-motion.js" defer></script></head>
 <body>
@@ -32,7 +31,7 @@
       <nav class="nav-links" id="navigation" aria-label="Navigation">
         <a href="#residences" data-t="navResidences">Résidences</a>
         <a href="#maquettes" data-t="navModels">Visite 3D</a>
-        <a href="#plan-residence" data-t="planNav">Plan</a>
+        <a href="projets.html" data-t="planNav">Plan</a>
         <a href="#biens" data-t="navProperties">Nos biens</a>
         <a href="#agence" data-t="navAgency">L’agence</a>
       </nav>
@@ -122,24 +121,6 @@
         </div>
       </div>
       <div class="tour-info"><span data-t="tourHint">Glissez pour regarder autour de vous · sélectionnez une pièce pour y entrer</span><span data-t="tourNotice">Visuels d’ambiance générés, visite de démonstration</span></div>
-    </section>
-
-    <section id="plan-residence" class="residence-plan wrap" aria-labelledby="planTitle">
-      <div class="section-intro reveal reveal-heading">
-        <div>
-          <p class="eyebrow" data-t="planLabel">PLAN D’ENSEMBLE</p>
-          <h2 id="planTitle" data-t="planTitle">La résidence prend forme.</h2>
-        </div>
-        <p data-t="planIntro">Défilez pour voir naître le quartier, ses douze immeubles, sa mosquée, sa piscine et ses jardins.</p>
-      </div>
-      <div class="plan-track">
-        <div class="plan-pin">
-          <canvas id="residenceCanvas" role="img" aria-labelledby="planTitle" aria-describedby="planNote"></canvas>
-          <div class="plan-caption"><span data-t="planBuildings">Immeubles en place</span><strong><span id="planCount">0</span> / 12</strong></div>
-          <div class="plan-progress" aria-hidden="true"></div>
-        </div>
-      </div>
-      <p id="planNote" data-t="planNote">Visualisation 3D illustrative : douze immeubles, mosquée, piscine, jardins et équipements. Projet de démonstration.</p>
     </section>
 
     <section id="biens" class="properties wrap">
