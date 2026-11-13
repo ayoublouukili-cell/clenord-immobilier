@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import { createView, changeView } from '../dist/district-controls.mjs';
+import { placement } from '../dist/district-motion.mjs';
+
+const stages = [...Array.from({length:12}, (_,i)=>.025+i*.043), .56,.63,.70,.76,.81,.85,.90];
+const assembled = progress => stages.every(stage => placement(progress, stage) === 1);
+assert.equal(assembled(0), false);
+assert.equal(assembled(.8), false, 'Keep exploration locked while the final amenities descend');
+assert.equal(assembled(.82), true, 'Unlock exploration after all elements land');
+assert.equal(assembled(1), true);
+assert.equal(assembled(.5), false, 'Reversing scroll returns to assembly mode');
+
+const view = createView();
+const initial = { ...view };
+changeView(view, 'orbit', 2 * Math.PI / .006, 0);
+assert.ok(Math.abs(Math.sin(view.yaw) - Math.sin(initial.yaw)) < 1e-10, 'A complete turn returns to the same angle');
+for (let i = 0; i < 100; i++) changeView(view, 'zoom', -1);
+assert.equal(view.distance, 25, 'Cannot zoom through buildings');
+for (let i = 0; i < 100; i++) changeView(view, 'zoom', 1);
+assert.equal(view.distance, 235, 'Entire site stays within camera range');
+changeView(view, 'orbit', 0, 1e6);
+assert.equal(view.pitch, 1.52);
+changeView(view, 'orbit', 0, -1e6);
+assert.equal(view.pitch, .12, 'Camera cannot go below the ground');
+changeView(view, 'pan', 1e6, 1e6);
+assert.ok(Math.abs(view.x) <= 48 && Math.abs(view.z) <= 42, 'Panning stays near the site');
+changeView(view, 'top');
+assert.equal(view.pitch, 1.52);
+changeView(view, 'reset');
+assert.deepEqual(view, initial, 'Reset restores every camera parameter');
+console.log('360° camera: full rotation, zoom limits, ground limits, pan, top view and reset OK');

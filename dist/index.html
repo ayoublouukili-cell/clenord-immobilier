@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Clénord Immobilier, votre agence à Tanger. Achat, vente, location et gestion immobilière.">
+  <meta name="theme-color" content="#0b1523">
+  <title>Clénord Immobilier — Agence à Tanger</title>
+  <link rel="icon" href="img/clenord-icon.png" type="image/png">
+  <link rel="preload" as="image" href="img/hero.webp">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="architecture.css">
+  <link rel="stylesheet" href="narrative.css">
+
+  <script src="app.js" defer></script>
+  <script src="concierge.js" defer></script>
+  <script type="module" src="narrative.js"></script>
+  <script type="module" src="residence-plan.js"></script>
+  <link rel="stylesheet" href="premium.css">
+<script src="gallery-motion.js" defer></script></head>
+<body>
+  <a class="skip" href="#main" data-t="skip">Aller au contenu</a>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="header" id="header">
+    <div class="nav-inner">
+      <a class="brand" href="#accueil" aria-label="Clénord Immobilier">
+        <img class="brand-emblem" src="img/clenord-emblem.webp" width="335" height="321" alt="">
+        <img class="brand-name" src="img/clenord-wordmark.webp" width="780" height="67" alt="">
+      </a>
+      <nav class="nav-links" id="navigation" aria-label="Navigation">
+        <a href="#residences" data-t="navResidences">Résidences</a>
+        <a href="#maquettes" data-t="navModels">Visite 3D</a>
+        <a href="#plan-residence" data-t="planNav">Plan</a>
+        <a href="#biens" data-t="navProperties">Nos biens</a>
+        <a href="#agence" data-t="navAgency">L’agence</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-button theme" id="theme" type="button"></button>
+        <select class="language" id="language" aria-label="Langue">
+          <option value="fr">FR</option><option value="en">EN</option><option value="ar">العربية</option>
+        </select>
+        <a class="button nav-contact" data-wa href="https://wa.me/212763437500" target="_blank" rel="noopener" ><span data-t="navContact">Contact</span><span class="arrow arrow-up" aria-hidden="true"></span></a>
+        <button class="icon-button menu" id="menu" type="button" aria-controls="navigation" aria-expanded="false"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="accueil">
+      <div class="hero-image" aria-hidden="true">
+        <div class="home-ribbon"><img src="img/hero.webp" alt=""><img src="img/villa.webp" alt=""><img src="img/apartment.webp" alt=""><img src="img/duplex.webp" alt=""><img src="img/hero.webp" alt=""><img src="img/villa.webp" alt=""><img src="img/apartment.webp" alt=""><img src="img/duplex.webp" alt=""></div>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-inner wrap">
+        <div class="hero-copy">
+          <p class="eyebrow hero-tag"><span></span><b data-t="heroLabel">TANGER, MAROC</b></p>
+          <h1><span data-t="heroOne">Tanger,</span><em data-t="heroTwo">à vivre autrement.</em></h1>
+          <p class="hero-description" data-t="heroText">Achat, vente, location et gestion immobilière à Tanger.</p>
+          <a class="button button-gold" href="#residences"><span data-t="heroCta">Explorer les résidences</span><span class="arrow arrow-down" aria-hidden="true"></span></a>
+        </div>
+        <div class="hero-foot">
+          <a class="scroll-cue" href="#residences"><span aria-hidden="true">↓</span><b data-t="scroll">DÉFILER POUR EXPLORER</b></a>
+          <small data-t="illustration">Photographie d’illustration</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="residences" class="residences">
+      <div class="wrap section-intro reveal reveal-heading">
+        <div><p class="eyebrow" data-t="sceneKicker">RÉSIDENCES</p><h2 data-t="sceneTitle">Trois façons de vivre à Tanger</h2></div>
+        <p data-t="sceneIntro">Du calme d’une villa aux rues animées du centre, explorez trois styles de vie.</p>
+      </div>
+      <div id="journey" class="journey" aria-label="Résidences">
+        <div class="journey-sticky">
+          <div id="scenes"></div>
+          <div class="scene-cut" aria-hidden="true"></div>
+          <div class="scene-ui">
+            <div class="scene-rail" id="sceneRail"></div>
+            <small data-t="illustration">Photographie d’illustration</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="maquettes" class="models wrap">
+      <div class="section-intro reveal reveal-heading">
+        <div>
+          <p class="eyebrow" data-t="modelKicker">VISITE IMMERSIVE · TANGER</p>
+          <h2 data-t="modelTitle">Entrez, explorez, prenez votre temps.</h2>
+        </div>
+        <p data-t="modelIntro">Faites glisser la vue pour regarder autour de vous, puis passez librement d’une pièce à l’autre.</p>
+      </div>
+      <nav class="model-picker" aria-label="Modèles de visite">
+        <a href="#villaStory" data-model="villa" aria-current="true" data-t="modelVilla">Villa</a>
+        <a href="#villaStory" data-model="maison" data-t="modelHouse">Maison</a>
+        <a href="#villaStory" data-model="appartement" data-t="modelApartmentChoice">Appartement</a>
+      </nav>
+      <div class="villa-story" id="villaStory" data-model="villa">
+        <div class="villa-story-pin">
+          <div class="villa-story-stage">
+            <div class="villa-story-halo" aria-hidden="true"></div>
+            <img class="villa-story-facade" src="img/villa-cutout.webp" alt="" loading="lazy">
+            <img class="villa-story-door" src="img/villa-entrance.webp" alt="" loading="lazy">
+            <figure class="villa-detail villa-detail-terrace" aria-hidden="true">
+              <div><img src="img/villa-cutout.webp" alt="" loading="lazy"></div>
+              <figcaption data-t="villaTerrace">La terrasse</figcaption>
+            </figure>
+            <figure class="villa-detail villa-detail-garden" aria-hidden="true">
+              <div><img src="panoramas/salon.webp" alt="" loading="lazy"></div>
+              <figcaption data-t="villaGarden">Le jardin</figcaption>
+            </figure>
+            <p class="eyebrow villa-story-label" data-t="tourLabel">VILLA CONTEMPORAINE · DÉMONSTRATION</p>
+            <div class="villa-story-copy">
+              <h3 class="villa-story-title" data-t="tourVilla">Une villa à découvrir de l’intérieur.</h3>
+              <p class="villa-story-hint" data-t="villaScroll">Défilez pour vous approcher ↓</p>
+              <button class="button button-gold" id="openVillaTour" type="button"><span data-t="tourOpen">Entrer dans la villa</span><span class="arrow arrow-up" aria-hidden="true"></span></button>
+            </div>
+            <div class="villa-story-progress" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tour-info"><span data-t="tourHint">Glissez pour regarder autour de vous · sélectionnez une pièce pour y entrer</span><span data-t="tourNotice">Visuels d’ambiance générés, visite de démonstration</span></div>
+    </section>
+
+    <section id="plan-residence" class="residence-plan wrap" aria-labelledby="planTitle">
+      <div class="section-intro reveal reveal-heading">
+        <div>
+          <p class="eyebrow" data-t="planLabel">PLAN D’ENSEMBLE</p>
+          <h2 id="planTitle" data-t="planTitle">La résidence prend forme.</h2>
+        </div>
+        <p data-t="planIntro">Défilez pour voir naître le quartier, ses douze immeubles, sa mosquée, sa piscine et ses jardins.</p>
+      </div>
+      <div class="plan-track">
+        <div class="plan-pin">
+          <canvas id="residenceCanvas" role="img" aria-labelledby="planTitle" aria-describedby="planNote"></canvas>
+          <div class="plan-caption"><span data-t="planBuildings">Immeubles en place</span><strong><span id="planCount">0</span> / 12</strong></div>
+          <div class="plan-progress" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p id="planNote" data-t="planNote">Visualisation 3D illustrative : douze immeubles, mosquée, piscine, jardins et équipements. Projet de démonstration.</p>
+    </section>
+
+    <section id="biens" class="properties wrap">
+      <div class="section-intro reveal reveal-heading">
+        <div><p class="eyebrow" data-t="catalogKicker">ACHAT & LOCATION</p><h2 data-t="catalogTitle">Trouvez votre prochain bien</h2></div>
+        <p data-t="catalogIntro">Ces annonces illustrent le catalogue. Contactez l’agence pour connaître les biens disponibles.</p>
+      </div>
+      <form class="filters" id="filters" aria-label="Filtrer les biens">
+        <label><span data-t="transaction">Transaction</span><select id="transaction"></select></label>
+        <label><span data-t="type">Type de bien</span><select id="type"></select></label>
+        <label><span data-t="district">Quartier</span><select id="district"></select></label>
+        <button type="button" class="button favorite-filter" id="savedFilter" aria-pressed="false"><span aria-hidden="true">♡</span><span data-t="favorites">Favoris</span></button>
+      </form>
+      <div class="results-line"><p id="resultCount" role="status"></p><button type="button" class="text-button" id="resetFilters" hidden data-t="reset">Réinitialiser</button></div>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <section class="agency" id="agence">
+      <div class="wrap agency-grid">
+        <div class="agency-photo reveal reveal-architecture">
+          <div class="agency-gallery" aria-hidden="true">
+            <img class="is-current" src="img/duplex.webp" alt="" loading="lazy">
+            <img src="img/penthouse.webp" alt="" loading="lazy">
+            <img src="img/villa.webp" alt="" loading="lazy">
+            <img src="img/studio.webp" alt="" loading="lazy">
+            <img src="img/house.webp" alt="" loading="lazy">
+          </div>
+          <small data-t="illustration">Photographie d’illustration</small>
+        </div>
+        <div class="agency-copy reveal reveal-heading">
+          <p class="eyebrow" data-t="agencyKicker">CLÉNORD IMMOBILIER · TANGER</p>
+          <h2 data-t="agencyTitle">Votre projet immobilier à Tanger</h2>
+          <p data-t="agencyText">Vous cherchez un bien, vous envisagez de vendre ou vous souhaitez déléguer sa gestion ? Parlez de votre projet avec Adil Benjana, directeur de l’agence.</p>
+          <div class="service-list" id="services"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact reveal reveal-contact" id="contact">
+      <div class="contact-media" aria-hidden="true"><img src="img/house.webp" alt="" loading="lazy"></div>
+      <div class="contact-frame" aria-hidden="true"></div>
+      <div class="contact-inner wrap">
+        <img class="contact-emblem" src="img/clenord-emblem.webp" alt="" width="335" height="321" loading="lazy">
+        <p class="eyebrow" data-t="contactKicker">CONTACT</p>
+        <h2 data-t="contactTitle">Parlons de votre projet.</h2>
+        <div class="contact-actions">
+          <a class="button button-gold" data-wa href="https://wa.me/212763437500" target="_blank" rel="noopener"><span data-t="whatsapp">Écrire sur WhatsApp</span><span class="arrow arrow-up" aria-hidden="true"></span></a>
+          <a class="button button-outline" href="tel:+212763437500"><bdi>+212 763 43 75 00</bdi></a>
+        </div>
+        <small data-t="illustration">Photographie d’illustration</small>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="brand" href="#accueil" aria-label="Clénord Immobilier">
+        <img class="brand-lockup" src="img/clenord-lockup.webp" width="785" height="438" alt="" loading="lazy">
+      </a>
+      <p data-t="footer">Tanger, Maroc · Site réalisé par MAYD DIGITAL</p>
+      <a class="text-button" href="#accueil"><span data-t="backTop">Retour en haut</span> ↑</a>
+    </div>
+  </footer>
+
+  <dialog id="details" aria-labelledby="detailTitle">
+    <button type="button" class="icon-button close-dialog" id="closeDialog" autofocus>×</button>
+    <div id="detailBody"></div>
+  </dialog>
+  <dialog id="villaTour" class="villa-tour" aria-labelledby="tourDialogTitle">
+    <div class="tour-dialog-bar">
+      <div><p class="eyebrow" data-t="tourDialogKicker">VISITE IMMERSIVE · VILLA DE DÉMONSTRATION</p><h2 id="tourDialogTitle" data-t="tourDialogTitleText">Explorez chaque pièce</h2></div>
+      <button type="button" class="icon-button" id="closeVillaTour" aria-label="Fermer la visite">×</button>
+    </div>
+    <div class="tour-stage" id="tourStage" tabindex="0" role="application" aria-label="Vue panoramique à 360 degrés">
+      <canvas id="tourCanvas"></canvas>
+      <div class="tour-fallback" id="tourFallback" hidden></div>
+      <div class="tour-stage-shade"></div>
+      <div class="tour-overlay"><span class="tour-room-count" id="tourRoomCount"></span><span class="tour-drag-hint" data-t="tourDrag">Glissez pour tourner à 360°</span></div>
+      <div class="tour-room-tabs" id="tourRoomTabs" role="group" aria-label="Choisir une pièce"></div>
+      <button type="button" class="tour-arrow tour-prev" aria-label="Pièce précédente" id="tourPrev">‹</button>
+      <button type="button" class="tour-arrow tour-next" aria-label="Pièce suivante" id="tourNext">›</button>
+    </div>
+    <p class="tour-disclaimer" data-t="tourDisclaimer">Images d’ambiance générées pour cette démonstration. Demandez à l’agence une visite réelle des biens disponibles.</p>
+  </dialog>
+</body>
+</html>
