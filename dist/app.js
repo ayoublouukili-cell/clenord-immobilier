@@ -124,6 +124,21 @@ const icons = {
 };
 const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">${icons[name]}</svg>`;
 const languages = ["fr", "en", "ar"];
+Object.assign(translations.fr, {
+  projectsPreviewLabel:"UNE VISITE INTERACTIVE", projectsPreviewTitle:"Découvrez nos projets à 360°",
+  projectsPreviewText:"Immeubles, villas, jardins et espaces communs : regardez le quartier prendre forme, puis explorez-le librement en 3D.",
+  projectsPreviewCta:"Entrer dans les projets 360°", projectsPreviewNote:"Concepts résidentiels illustratifs · rotation et zoom"
+});
+Object.assign(translations.en, {
+  projectsPreviewLabel:"AN INTERACTIVE VISIT", projectsPreviewTitle:"Discover our projects in 360°",
+  projectsPreviewText:"Buildings, villas, gardens and shared spaces: watch the district take shape, then explore it freely in 3D.",
+  projectsPreviewCta:"Explore the 360° projects", projectsPreviewNote:"Illustrative residential concepts · rotate and zoom"
+});
+Object.assign(translations.ar, {
+  projectsPreviewLabel:"جولة تفاعلية", projectsPreviewTitle:"اكتشف مشاريعنا بزاوية 360°",
+  projectsPreviewText:"مبانٍ وفيلات وحدائق ومرافق مشتركة: شاهد المجمع يتشكّل، ثم استكشفه بحرية في عرض ثلاثي الأبعاد.",
+  projectsPreviewCta:"ادخل لاستكشاف مشاريع 360°", projectsPreviewNote:"تصورات سكنية توضيحية · دوران وتقريب"
+});
 const read = key => { try { return localStorage.getItem("clenord." + key); } catch { return null; } };
 const write = (key, value) => { try { localStorage.setItem("clenord." + key, value); } catch {} };
 let lang = languages.includes(read("lang")) ? read("lang") : "fr";
