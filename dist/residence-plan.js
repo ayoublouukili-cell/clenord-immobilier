@@ -1,14 +1,16 @@
 import {attachDistrictControls} from './district-controls.mjs';
 import {placement} from './district-motion.mjs';
+import {demos,isVilla,parcel,poolBounds} from './project-demos.mjs';
 import * as THREE from './vendor/three-0.160.1.min.js';
 
-function buildDistrict(canvas,track,pin,count,villas=false) {
+function buildDistrict(canvas,track,pin,count,demo=demos[0]) {
 const header = document.querySelector('#header');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const clamp = x => Math.min(1, Math.max(0, x));
 const ease = x => { x = clamp(x); return x*x*(3-2*x); };
 const mat = (color, roughness = .8, metalness = 0) => new THREE.MeshStandardMaterial({color, roughness, metalness});
 const stone = mat('#dfd5c4'), stone2 = mat('#c9b79b'), glass = mat('#517f8a', .22, .24), dark = mat('#263746'), gold = mat('#bca47a', .4, .4), roof = mat('#f1e7d5'), road = mat('#46555a'), paving = mat('#9d9d91'), grass = mat('#527765'), water = mat('#4dabb7', .16, .1), trunk = mat('#685342'), leaves = mat('#477259');
+stone.color.set(demo.stone);stone2.color.set(demo.accent);grass.color.set(demo.grass);water.color.set(demo.water);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#132839');
 scene.fog = new THREE.Fog('#132839', 145, 260);
@@ -59,16 +61,12 @@ function cyl(parent,r1,r2,h,material,x,y,z, sides=12) {
 function group(x,z,stage,offset=0) { const g=new THREE.Group(); g.position.set(x,0,z); world.add(g); animated.push({g,stage,offset}); return g; }
 // A single grounded, continuous 3D site: streets, courtyard and individually placed buildings.
 box(world, 91,.5,81,grass,0,-.4,0,false);
-box(world, 72,.05,7,road,0,-.1,-2,false);
-box(world, 8,.06,59,road,0,-.07,0,false);
-for (const x of [-30,-21,-12,12,21,30]) {
-  box(world, 7,.07,1.5,paving,x,-.05,-7,false);
-  box(world, 7,.07,1.5,paving,x,-.05,3,false);
-}
-// Road markings and landscaped boulevard edges are fixed to the ground.
-for (let x=-32;x<=32;x+=8) box(world,3.4,.015,.1,asphaltMark,x,-.052,-2,false);
-for (const z of [-5.75,1.75]) box(world,72,.025,.12,stone2,0,-.045,z,false);
-for (const x of [-4.2,4.2]) box(world,.12,.025,58,stone2,x,-.035,0,false);
+// The boulevard stays outside the central amenities; side streets serve both rows.
+box(world,84,.05,6,road,0,-.1,-11,false);
+for(const x of [-40,40])box(world,5,.06,62,road,x,-.07,0,false);
+for(const z of [-14.3,-7.7])box(world,84,.08,1,paving,0,-.04,z,false);
+for(let x=-36;x<=36;x+=8)box(world,3.4,.015,.1,asphaltMark,x,-.052,-11,false);
+for(const x of [-43,43])box(world,.12,.025,62,stone2,x,-.035,0,false);
 function lamp(parent,x,z) {
  const post=cyl(parent,.09,.13,4.2,dark,x,2.1,z,10);
  post.castShadow=false;
@@ -85,17 +83,16 @@ function vehicle(parent,x,z,paint,rotation=0) {
  }
  box(v,.08,.14,.8,lampGlow,1.16,.35,0,false);
 }
-for(const x of [-33,-25,-17,17,25,33]) {lamp(world,x,-6.4);lamp(world,x,5.3);}
-vehicle(world,-16,-2,carPaints[0]);
-vehicle(world,18,-2,carPaints[1],Math.PI);
-vehicle(world,2,12,carPaints[2],Math.PI/2);
+for(const x of [-33,-25,-17,17,25,33]) {lamp(world,x,-15);lamp(world,x,-7);}
+vehicle(world,-16,-11,carPaints[0]);
+vehicle(world,18,-11,carPaints[1],Math.PI);
+vehicle(world,40,12,carPaints[2],Math.PI/2);
 for (let i=0;i<12;i++) {
- const x = [-31,-20,-9,9,20,31][i%6];
- const z = i<6 ? -20 : 19;
- const floors = [6,7,6,8,7,6,5,6,5,6,5,5][i];
+ const {x,z} = parcel(i);
+ const floors = demo.floors[i] || 2;
  const g=group(x,z,.025+i*.043,i);
  g.scale.x=[1,.94,1.04][i%3];
- if(villas){
+ if(isVilla(demo,i)){
   box(g,8,.25,11,paving,0,.05,0);
   box(g,7,3.1,6.5,stone,0,1.7,0);
   box(g,4.9,2.8,5,roof,-.9,4.6,-.6);
@@ -115,6 +112,12 @@ for (let i=0;i<12;i++) {
  const height = floors*2.5;
  box(g,8,height,8,i%3===0?stone2:stone,0,height/2,0);
  box(g,8.4,.3,8.4,roof,0,height+.15,0);
+ if(demo.kind==='terraces') {
+   box(g,5.8,.12,5,stone2,0,height+.36,0);
+   for(const xx of [-2.5,2.5])for(const zz of [-2,2])box(g,.14,2,.14,bronze,xx,height+1.4,zz);
+   for(let k=0;k<9;k++)box(g,.12,.15,4.8,bronze,-2.8+k*.7,height+2.4,0);
+   for(const xx of [-2,2]) {box(g,1,.5,1,planters,xx,height+.7,2.8);const shrub=new THREE.Mesh(new THREE.IcosahedronGeometry(.65,1),hedge);shrub.position.set(xx,height+1.3,2.8);g.add(shrub);}
+ }
  // Recessed roof parapet, lift core and rooftop mechanical screening.
  for(const side of [-1,1]) {
    box(g,8.4,.6,.18,stone2,0,height+.48,side*4.13);
@@ -189,32 +192,35 @@ for (const x of [-4.5,-2.7,2.7,4.5]) {
 }
 for(const z of [-3.5,-1.2,1.2,3.5]) box(mosque,.12,2.3,.95,glass,-5.55,3.5,z,false);
 for(const y of [4.5,8.5,12.3]) box(mosque,2.4,.2,2.4,bronze,7,y,-3);
-// Pool is a physical water surface with a border and a deck.
-const pool=group(22,0,.63);
-box(pool,17,.18,9,stone2,0,.12,0);
-box(pool,15,.09,7,water,0,.25,0,false);
-for(let k=0;k<8;k++) box(pool,12-k*.55,.012,.025,roof,0,.31,-2.8+k*.78,false);
-for(const x of [-7.9,7.9]) box(pool,.35,.4,9,roof,x,.32,0);
-for(const z of [-4.2,4.2]) box(pool,16,.4,.35,roof,0,.32,z);
-for(const x of [-5,0,5]) { box(pool,2,.14,.8,roof,x,.2,6); box(pool,.13,1.6,.13,gold,x,.9,5.7); }
-// Sun loungers and planting beds frame the pool as a residential amenity.
-for(const x of [-6,-2,2,6]) {
- box(pool,1.35,.13,2.3,roof,x,.28,-5.9);
- box(pool,1.35,.72,.13,stone2,x,.64,-6.9);
+// A recessed, clearly bounded swimming pool with a dry terrace and access ladder.
+const pool=group(poolBounds.x,poolBounds.z,.63);
+const poolTile=mat('#e8f1e8',.4),poolLining=mat('#27778e',.35);
+box(pool,19,.18,14,paving,0,.1,0);
+box(pool,15,.12,9,poolLining,0,.23,0,false);
+box(pool,14.2,.035,8.2,water,0,.32,0,false);
+for(const x of [-7.5,7.5])box(pool,.45,.42,9.4,poolTile,x,.34,0);
+for(const z of [-4.5,4.5])box(pool,15.4,.42,.45,poolTile,0,.34,z);
+// Subtle lane markers sit below the water instead of floating above it.
+for(const x of [-3.5,0,3.5])box(pool,.08,.012,6.8,poolLining,x,.29,0,false);
+for(const x of [-5,-1.8,1.8,5]) {
+ box(pool,1.25,.28,2,roof,x,.32,5.8);
+ const back=box(pool,1.25,.55,.15,stone2,x,.67,6.5);back.rotation.x=-.28;
 }
-for(const x of [-8.5,8.5]) {
- for(const z of [-3,0,3]) {
-  cyl(pool,.12,.15,1.3,trunk,x,.65,z);
-  const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(.62,1),leaves);
-  crown.position.set(x,1.6,z);pool.add(crown);
- }
+for(const x of [-5,5]) {
+ cyl(pool,.06,.06,2.4,bronze,x,1.4,-5.9);
+ const umbrella=new THREE.Mesh(new THREE.ConeGeometry(1.35,.5,16),roof);umbrella.position.set(x,2.8,-5.9);pool.add(umbrella);
 }
+for(const x of [-5.8,-5.1]) {
+ cyl(pool,.055,.055,1.1,bronze,x,.85,-3.9);
+ box(pool,.09,.09,1,bronze,x,1.35,-4.3);
+}
+for(const y of [.5,.8,1.1])box(pool,.8,.06,.06,bronze,-5.45,y,-3.9);
 // Gardens, trees and paths descend with the neighborhood.
-const gardens=group(0,11,.70);
-box(gardens,17,.13,12,grass,0,.05,0);
-for(const x of [-6,0,6]) box(gardens,1.1,.14,12,paving,x,.13,0,false);
+const gardens=group(0,8,.70);
+box(gardens,8,.13,12,grass,0,.05,0);
+for(const x of [-3,0,3]) box(gardens,1.1,.14,12,paving,x,.13,0,false);
 for(let i=0;i<18;i++) {
- const x=-7+(i%6)*2.8, z=-4.5+Math.floor(i/6)*4.5;
+ const x=-2.7+(i%3)*2.7, z=-4.5+Math.floor(i/3)*1.8;
  cyl(gardens,.15,.21,1.8,trunk,x,1,z);
  const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(.95+(i%3)*.13,1),leaves);
  crown.position.set(x,2.45,z); crown.castShadow=true; gardens.add(crown);
@@ -222,12 +228,13 @@ for(let i=0;i<18;i++) {
 const sports=group(-16,35,.76);
 box(sports,16,.13,8,mat('#577d83'),0,.12,0);
 box(sports,.12,.025,8,roof,0,.21,0,false);
-for(const x of [-7.8,7.8]) box(sports,.12,2.1,4,roof,x,1.1,0);
+
 // Painted multisport pitch markings and goals.
 for(const z of [-3.7,3.7]) box(sports,15,.018,.08,roof,0,.22,z,false);
 for(const x of [-7.5,7.5]) {
  box(sports,.08,.018,7.4,roof,x,.22,0,false);
- box(sports,.1,1.5,2.2,roof,x,1.0,0,false);
+ for(const z of [-1.1,1.1])box(sports,.09,1.6,.09,roof,x,.95,z);
+ box(sports,.09,.09,2.3,roof,x,1.75,0);
 }
 const circle=new THREE.Mesh(new THREE.RingGeometry(1.65,1.71,48),roof);
 circle.rotation.x=-Math.PI/2;circle.position.y=.225;sports.add(circle);
@@ -252,6 +259,28 @@ const parking=group(-23,11,.90);
 box(parking,13,.12,7,paving,0,.1,0);
 for(const x of [-5,-2,1,4]) box(parking,.08,.015,6,roof,x,.18,0,false);
 for(const x of [-4.1,1.9]) vehicle(parking,x,0,carPaints[(x>0)?1:0],Math.PI/2);
+// Name the amenities in the visitor's language so each shape is identifiable.
+const amenities = [
+ [pool,3.8,{fr:'PISCINE',en:'SWIMMING POOL',ar:'المسبح'}],
+ [mosque,18,{fr:'MOSQUÉE',en:'MOSQUE',ar:'المسجد'}],
+ [gardens,5,{fr:'JARDINS',en:'GARDENS',ar:'الحدائق'}],
+ [sports,3.5,{fr:'TERRAIN DE SPORT',en:'SPORTS COURT',ar:'الملعب الرياضي'}],
+ [tennis,3.5,{fr:'TENNIS',en:'TENNIS',ar:'ملعب التنس'}],
+ [shops,5.5,{fr:'COMMERCES',en:'SHOPS',ar:'المحلات'}]
+];
+const labels=amenities.map(([parent,y,text])=>{
+ const surface=document.createElement('canvas');surface.width=640;surface.height=128;
+ const texture=new THREE.CanvasTexture(surface);texture.colorSpace=THREE.SRGBColorSpace;
+ const material=new THREE.SpriteMaterial({map:texture,depthTest:false,transparent:true});
+ const sprite=new THREE.Sprite(material);sprite.position.set(0,y,0);sprite.scale.set(13,2.6,1);sprite.renderOrder=10;parent.add(sprite);
+ return {surface,texture,text};
+});
+function translateLabels(){for(const {surface,texture,text} of labels){
+ const context=surface.getContext('2d');context.clearRect(0,0,640,128);context.fillStyle='#0b1825e8';context.fillRect(0,0,640,128);
+ context.strokeStyle='#daba7a';context.lineWidth=4;context.strokeRect(2,2,636,124);context.fillStyle='#fff1d5';context.font='bold 40px Arial';context.textAlign='center';context.textBaseline='middle';
+ context.direction=document.documentElement.lang==='ar'?'rtl':'ltr';context.fillText(text[document.documentElement.lang]||text.fr,320,66,610);texture.needsUpdate=true;
+}}
+translateLabels();new MutationObserver(translateLabels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 for(const item of animated) {
  const root=item.g;root.updateMatrixWorld(true);const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert();const batches=new Map();const old=[];
  root.traverse(o=>{if(!o.isMesh)return;const g=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();g.applyMatrix4(new THREE.Matrix4().multiplyMatrices(inverse,o.matrixWorld));const list=batches.get(o.material)||[];list.push(g);batches.set(o.material,list);old.push(o)});
@@ -304,13 +333,31 @@ if(typeof ResizeObserver!=='undefined') new ResizeObserver(resize).observe(pin);
 resize();
 
 }
-const original=document.querySelector('#residenceCanvas');
-const firstTrack=original.closest('.plan-track');
-const villaSection=document.createElement('section');villaSection.className='residence-plan wrap';villaSection.id='villaDistrict';
-villaSection.innerHTML='<div class="section-intro"><div><p class="eyebrow">CLÉNORD · GARDEN COLLECTION</p><h2 data-villa-title></h2></div><p data-villa-copy></p></div><div class="plan-track"><div class="plan-pin"><canvas aria-label="Villa district 3D"></canvas><div class="plan-caption"><span data-villa-label></span><strong><span class="villa-count">0</span> / 12</strong></div><div class="plan-progress"></div></div></div><p data-villa-note></p>';
-original.closest('section').after(villaSection);
-const villaText={fr:['Les jardins de Clénord.','Douze villas, jardins privatifs, bassins et équipements de proximité. Une composition résidentielle à découvrir au fil du scroll.','Villas en place','Concept résidentiel fictif · visualisation 3D illustrative'],en:['The gardens of Clénord.','Twelve villas, private gardens, pools and shared amenities. Explore the entire district in 360?: rotate, zoom and pan freely.','Villas placed','Fictional residential concept · illustrative 3D visualization'],ar:['حدائق كلينورد.','اثنتا عشرة فيلا وحدائق خاصة ومسابح ومرافق مشتركة. اكتشف المجمع مع التمرير.','الفيلات في مكانها','تصور سكني افتراضي · عرض ثلاثي الأبعاد توضيحي']};
-function translateVillas(){const t=villaText[document.documentElement.lang]||villaText.fr;['title','copy','label','note'].forEach((k,i)=>villaSection.querySelector('[data-villa-'+k+']').textContent=t[i])}
-translateVillas();new MutationObserver(translateVillas).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-buildDistrict(original,firstTrack,firstTrack.querySelector('.plan-pin'),document.querySelector('#planCount'));
-buildDistrict(villaSection.querySelector('canvas'),villaSection.querySelector('.plan-track'),villaSection.querySelector('.plan-pin'),villaSection.querySelector('.villa-count'),true);
+const original=document.querySelector('#plan-residence');
+const collection=document.createElement('div');collection.className='demo-collection';
+const chooser=document.createElement('nav');chooser.className='demo-chooser wrap';chooser.setAttribute('aria-label','360° demos');
+const catalogCopy={fr:{open:'Découvrir le projet',note:'DÉMO · CONCEPT ILLUSTRATIF',placed:'Résidences en place',hint:'Défilez pour assembler le projet, puis explorez à 360°.'},en:{open:'Explore the project',note:'DEMO · ILLUSTRATIVE CONCEPT',placed:'Residences in place',hint:'Scroll to assemble the project, then explore in 360°.'},ar:{open:'اكتشف المشروع',note:'ديمو · تصور توضيحي',placed:'المساكن في مكانها',hint:'مرّر لتجميع المشروع، ثم استكشف بزاوية 360°.'}};
+const sections=demos.map((demo,i)=>{
+ const card=document.createElement('a');card.href='#demo-'+demo.id;card.className='demo-choice';
+ card.innerHTML=`<span class="demo-choice-number">0${i+1} / 04</span><div class="demo-miniature ${demo.kind}" aria-hidden="true">${Array.from({length:6},(_,n)=>`<i style="--floors:${isVilla(demo,n*2)?2:demo.floors[n*2]};--facade:${demo.stone};--accent:${demo.accent}"></i>`).join('')}</div><small></small><h2></h2><p></p><span class="demo-choice-action"></span>`;
+ chooser.append(card);
+ const section=document.createElement('section');section.className='residence-plan wrap demo-section';section.id='demo-'+demo.id;
+ section.setAttribute('aria-labelledby',section.id+'-title');
+ section.innerHTML=`<div class="section-intro"><div><p class="eyebrow">CLÉNORD · DEMO 0${i+1}</p><h2 id="${section.id}-title"></h2></div><p class="demo-description"></p></div><p class="demo-assembly-hint"></p><div class="plan-track"><div class="plan-pin"><canvas id="${demo.id}-canvas"></canvas><div class="plan-caption"><span class="demo-placed"></span><strong><span class="demo-count">0</span> / 12</strong></div><div class="plan-progress" aria-hidden="true"></div></div></div><p class="demo-note"></p>`;
+ const track=section.querySelector('.plan-track');track.classList.add('is-explorable');track.classList.toggle('is-animated',!matchMedia('(prefers-reduced-motion: reduce)').matches);
+ collection.append(section);return {demo,card,section};
+});
+original.replaceWith(chooser,collection);
+function translateCollection(){
+ const lang=document.documentElement.lang;const t=catalogCopy[lang]||catalogCopy.fr;
+ for(const {demo,card,section} of sections){
+  const name=demo.name[lang]||demo.name.fr,copy=demo.copy[lang]||demo.copy.fr;
+  card.querySelector('h2').textContent=name;card.querySelector('p').textContent=copy;card.querySelector('small').textContent=t.note;card.querySelector('.demo-choice-action').textContent=t.open+' ↗';
+  section.querySelector('h2').textContent=name;section.querySelector('.demo-description').textContent=copy;section.querySelector('.demo-note').textContent=t.note;section.querySelector('.demo-placed').textContent=t.placed;section.querySelector('.demo-assembly-hint').textContent=t.hint;
+ }
+}
+translateCollection();new MutationObserver(translateCollection).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+// Initialise only near the viewport, so browsing the catalogue does not build four scenes at once.
+function start(section){const item=sections.find(item=>item.section===section);const track=section.querySelector('.plan-track');buildDistrict(section.querySelector('canvas'),track,section.querySelector('.plan-pin'),section.querySelector('.demo-count'),item.demo);}
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);start(entry.target);}},{rootMargin:'400px'});sections.forEach(({section})=>observer.observe(section));}
+else sections.forEach(({section})=>start(section));

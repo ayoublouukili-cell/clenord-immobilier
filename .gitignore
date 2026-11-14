@@ -1,4 +1,5 @@
 .openai/
+.qa/
 node_modules/
 *.zip
 .env
